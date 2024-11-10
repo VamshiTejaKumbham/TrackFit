@@ -3,27 +3,22 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// exercise.php
 session_start();
 require_once 'includes/db.php';
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Get the logged-in user's ID
 $user_id = $_SESSION['user_id'];
 
-// Handle exercise form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $activity = $_POST['activity'];
     $duration = $_POST['duration'];
     $calories_burned = $_POST['calories_burned'];
     $date = $_POST['date'];
 
-    // Insert exercise record into the database
     $stmt = $conn->prepare("INSERT INTO exercises (user_id, activity, duration, calories_burned, date) VALUES (:user_id, :activity, :duration, :calories_burned, :date)");
     $stmt->execute([
         'user_id' => $user_id,
@@ -37,7 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 
-// Fetch all exercises for the user
 $exerciseQuery = $conn->prepare("SELECT * FROM exercises WHERE user_id = :user_id ORDER BY date DESC");
 $exerciseQuery->execute(['user_id' => $user_id]);
 $exercises = $exerciseQuery->fetchAll();
@@ -49,7 +43,7 @@ $exercises = $exerciseQuery->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track Exercise</title>
-    <link rel="stylesheet" href="assets/style.css"> <!-- Link to your CSS -->
+    <link rel="stylesheet" href="assets/style.css"> 
 </head>
 <body>
     <header>

@@ -3,30 +3,24 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// index.php
 session_start();
 require_once 'includes/db.php';
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Get the logged-in user's ID
 $user_id = $_SESSION['user_id'];
 
-// Fetch recent exercises
 $exerciseQuery = $conn->prepare("SELECT * FROM exercises WHERE user_id = :user_id ORDER BY date DESC LIMIT 5");
 $exerciseQuery->execute(['user_id' => $user_id]);
 $exercises = $exerciseQuery->fetchAll();
 
-// Fetch recent diet plans
 $dietQuery = $conn->prepare("SELECT * FROM diet_plans WHERE user_id = :user_id ORDER BY date DESC LIMIT 5");
 $dietQuery->execute(['user_id' => $user_id]);
 $diets = $dietQuery->fetchAll();
 
-// Fetch recent progress
 $progressQuery = $conn->prepare("SELECT * FROM progress WHERE user_id = :user_id ORDER BY date DESC LIMIT 5");
 $progressQuery->execute(['user_id' => $user_id]);
 $progressRecords = $progressQuery->fetchAll();
@@ -38,7 +32,7 @@ $progressRecords = $progressQuery->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fitness Tracker Dashboard</title>
-    <link rel="stylesheet" href="assets/style.css"> <!-- Link to your CSS -->
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
     <header>

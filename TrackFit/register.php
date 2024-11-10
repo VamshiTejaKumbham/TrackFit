@@ -1,12 +1,12 @@
+<!-- register.php -->
 <?php
-// register.php
+
 session_start();
 require_once 'includes/db.php';
 
 $error = '';
 $success = '';
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -15,14 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($password !== $confirm_password) {
         $error = "Passwords do not match.";
     } else {
-        // Check if username already exists
+    
         $stmt = $conn->prepare("SELECT id FROM users WHERE username = :username");
         $stmt->execute(['username' => $username]);
         
         if ($stmt->fetch()) {
             $error = "Username already taken.";
         } else {
-            // Insert the new user
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
             $stmt->execute([
@@ -42,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="assets/style.css"> <!-- Link to your CSS -->
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
     <header>

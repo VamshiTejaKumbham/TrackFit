@@ -1,28 +1,25 @@
 <?php
-// diet.php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
 require_once 'includes/db.php';
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Get the logged-in user's ID
+
 $user_id = $_SESSION['user_id'];
 
-// Handle diet form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $meal_type = $_POST['meal_type'];
     $description = $_POST['description'];
     $calories = $_POST['calories'];
     $date = $_POST['date'];
 
-    // Insert diet record into the database
+   
     $stmt = $conn->prepare("INSERT INTO diet_plans (user_id, meal_type, description, calories, date) VALUES (:user_id, :meal_type, :description, :calories, :date)");
     $stmt->execute([
         'user_id' => $user_id,
@@ -36,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 
-// Fetch all diet records for the user
+
 $dietQuery = $conn->prepare("SELECT * FROM diet_plans WHERE user_id = :user_id ORDER BY date DESC");
 $dietQuery->execute(['user_id' => $user_id]);
 $diets = $dietQuery->fetchAll();
@@ -48,7 +45,7 @@ $diets = $dietQuery->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log Diet</title>
-    <link rel="stylesheet" href="assets/style.css"> <!-- Link to your CSS -->
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
     <header>

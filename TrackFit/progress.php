@@ -1,27 +1,24 @@
 <?php
-// progress.php
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
 require_once 'includes/db.php';
 
-// Check if user is logged in
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Get the logged-in user's ID
 $user_id = $_SESSION['user_id'];
 
-// Handle progress form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $weight = $_POST['weight'];
     $body_fat_percentage = $_POST['body_fat_percentage'];
     $date = $_POST['date'];
 
-    // Insert progress record into the database
     $stmt = $conn->prepare("INSERT INTO progress (user_id, weight, body_fat_percentage, date) VALUES (:user_id, :weight, :body_fat_percentage, :date)");
     $stmt->execute([
         'user_id' => $user_id,
@@ -34,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 
-// Fetch all progress records for the user
+
 $progressQuery = $conn->prepare("SELECT * FROM progress WHERE user_id = :user_id ORDER BY date DESC");
 $progressQuery->execute(['user_id' => $user_id]);
 $progressRecords = $progressQuery->fetchAll();
@@ -46,7 +43,7 @@ $progressRecords = $progressQuery->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Record Progress</title>
-    <link rel="stylesheet" href="assets/style.css"> <!-- Link to your CSS -->
+    <link rel="stylesheet" href="assets/style.css"> 
 </head>
 <body>
     <header>

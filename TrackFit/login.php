@@ -1,12 +1,12 @@
 <?php
-// login.php
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
 require_once 'includes/db.php';
 
-// Check if user is already logged in
+
 if (isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit();
@@ -14,18 +14,18 @@ if (isset($_SESSION['user_id'])) {
 
 $error = '';
 
-// Handle form submission
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Query to check if the user exists
+    
     $stmt = $conn->prepare("SELECT id, password FROM users WHERE username = :username");
     $stmt->execute(['username' => $username]);
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
-        // Password is correct, start the session
+       
         $_SESSION['user_id'] = $user['id'];
         header("Location: index.php");
         exit();
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="assets/style.css"> <!-- Link to your CSS -->
+    <link rel="stylesheet" href="assets/style.css"> 
 </head>
 <body>
     <header>
