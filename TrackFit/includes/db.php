@@ -1,9 +1,9 @@
 <?php
-// includes/db.php
+
 $host = 'localhost';
 $dbname = 'trackfit';
-$username = 'root'; // Replace with your database username
-$password = '';     // Replace with your database password
+$username = 'root'; 
+$password = '';     
 
 try {
     $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
